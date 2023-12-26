@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="TVEL.cpp" />
+    <ClCompile Include="TVEL1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TVEL1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
