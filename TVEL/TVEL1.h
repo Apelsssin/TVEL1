@@ -11,31 +11,35 @@
 using json = nlohmann::json;
 
 class TVEL {
-	float fuel_el_step; // Шаг размешения ТВЭЛов
-	const float pi = 3.14159;
-	float delta_shell; //Толщина оболочки ТВЭЛа [м]
-	float delta_He; //Толщина газового зазора [м]
-	float outer_radius_fuel_tablet; //Наружний радиус топливной таблетки [м]
-	float inner_radius_fuel_tablet; //Внутренний радиус топливной таблетки [м]
-	float coolant_temp_in_K; //Температура теплоносителя на входе [K]
-	float coolant_temp_out_K; //Температура теплоносителя на выходе [K]
-	float q_v; //Обьемное энерговыделение топлива [Вт/м3]
-	float r_step; //Шаг построения графика по радиусу [м]
-	float Cp; // Теплоемкость теплоносителя 
-	float coolant_lambda; // [Вт/м*К]
-	float fuel_lambda;// [Вт/м*К]
-	float He_lambda; // [Вт/м*К]
-	float shell_lambda;// [Вт/м*К]
-	float K_r_max; // []
-	float K_z;//[]
-	long double l; //[м]
-	size_t n_assembly; //Число ТВС
-	size_t n_fuel_el; //Число ТВЭЛ
-	std::vector <std::pair <float, float>> v_of_temp_K_r; //Вектор расперделения температур по радиусу в Кельвинах
-	float rho_coolant_avg;//[кг/м^3]
-	float mu_coolant_avg;//Динамическая вязкость [Па*с]
-	long double N_t;// 3200 / 163 / 312 * 1000000; //[Вт] на 1 ТВЭЛ (62923)
-	long double Q_1; // 88000 / 163 / 312 / 3600; // Расход через сечение 1 ТВЭЛ (0.00048066) [м/с]
+	float fuel_el_step;	// Шаг размешения ТВЭЛов	[м]
+	float delta_shell;	// Толщина оболочки ТВЭЛа	[м]
+	float delta_He;	// Толщина газового зазора	[м]
+	float outer_radius_fuel_tablet;	// Наружний радиус топливной таблетки	[м]
+	float inner_radius_fuel_tablet;	// Внутренний радиус топливной таблетки	[м]
+	float coolant_temp_in_K;	// Температура теплоносителя на входе	[K]
+	float coolant_temp_out_K;	// Температура теплоносителя на выходе	[K]
+	float q_v;	// Обьемное энерговыделение топлива	[Вт/м3]
+	float r_step = 0.0001;	// Шаг построения графика по радиусу	[м]
+	float Cp;	// Удельная теплоемкость теплоносителя	[Дж/кг*К]
+	float coolant_lambda;	// Коэф. теплопроводности теплоносителя	[Вт/м*К]
+	float fuel_lambda;	// Коэф. теплопроводности топливной таблетки	[Вт/м*К]
+	float He_lambda;	// Коэф. теплопроводности газового зазора	[Вт/м*К]
+	float shell_lambda;	// Коэф. теплопроводности оболочки ТВЭЛа	[Вт/м*К]
+	float K_r_max;	// Макс. коэф. неравномерности по радиусу	[-]
+	float K_z;	// Коэф. неравномерности по высоте	[-]
+	const double l = 0.0000001;	// Длина свободного пробега молекул теплоносителя	[м]
+	const size_t n_assembly = 1;	// Число ТВС	[-]
+	const size_t n_fuel_el = 1;	// Число ТВЭЛ	[-]
+	std::vector <std::pair <float, float>> v_of_temp_K;	// Вектор расперделения температур по радиусу в Кельвинах
+	float rho_coolant_avg;	// Средняя плотность теплоносителя	[кг/м^3]
+	float mu_coolant_avg;	// Динамическая вязкость теплоносителя	[Па*с]
+	float reactor_thermal_power;	// Тепловая мощность реактора	[МВт]
+	long double N_t;	// Тепловая мощность одного ТВЭЛа	[Вт] 
+	long double consumption;	// Расход через сечение 1 ТВЭЛ	[кг/с]   
+	float enthalpy_in;	// Энтальпия на входе	[Дж/кг]
+	float enthalpy_out;	// Энтальпия на выходе	[Дж/кг]
+	float density_avg;	// Средняя плотность теплоносителя	[кг/м^3]
+	int x;
 
 public:
 	TVEL() {
@@ -43,7 +47,7 @@ public:
 		std::ifstream file;
 		file.open(R"(consts.json)", std::ios::in);
 		json Doc{ json::parse(file) };
-		for (auto& [key, value] : Doc.items()) {
+		for (auto& [key, value] : Doc.items()) { 
 			if (key == "fuel_el_step") fuel_el_step = value;
 			else if (key == "delta_shell") delta_shell = value;
 			else if (key == "delta_He") delta_He = value;
@@ -60,18 +64,20 @@ public:
 			else if (key == "shell_lambda") shell_lambda = value;
 			else if (key == "K_r_max") K_r_max = value;
 			else if (key == "K_z") K_z = value;
-			else if (key == "l") l = value;
-			else if (key == "n_assembly") n_assembly = value;
-			else if (key == "n_fuel_el") n_fuel_el = value;
 			else if (key == "rho_coolant_avg") rho_coolant_avg = value;
 			else if (key == "mu_coolant_avg") mu_coolant_avg = value;
-			else if (key == "N_t") N_t = value;
-			else if (key == "Q_1") Q_1 = value;
-
+			else if (key == "reactor_thermal_power") reactor_thermal_power = value;
+			else if (key == "enthalpy_in") enthalpy_in = value;
+			else if (key == "enthalpy_out") enthalpy_out = value;
 		}
+		N_t = reactor_thermal_power * 1000000 / 312 / 163;
+		consumption = N_t / (enthalpy_out - enthalpy_in);
 	}
-	void calculation();
+	// Расчитывет значение температуры от радиуса и отправляет данные в v_of_temp_K
+	void temperature_calculation();
+	// Геттер для v_of_temp_K
 	std::vector <std::pair <float, float>> get_v();
+	// Сортировка неупорядоченных значений вектора v_of_temp_K
 	void sort();
 
 	TVEL(const TVEL&) = delete;
