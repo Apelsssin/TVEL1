@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Exceptions.cpp" />
+    <ClCompile Include="Temp_calc_in_fuel_el.cpp" />
     <ClCompile Include="TVEL.cpp" />
-    <ClCompile Include="TVEL1.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TVEL1.h" />
+    <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="Temp_calc_in_fuel_el.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

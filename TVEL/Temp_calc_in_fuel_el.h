@@ -7,6 +7,7 @@
 #include "gnuplot-iostream.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include "Exceptions.h"
 
 using json = nlohmann::json;
 
@@ -39,15 +40,15 @@ class TVEL {
 	float enthalpy_in;	// Энтальпия на входе	[Дж/кг]
 	float enthalpy_out;	// Энтальпия на выходе	[Дж/кг]
 	float density_avg;	// Средняя плотность теплоносителя	[кг/м^3]
-	int x;
 
 public:
 	TVEL() {
-
+		// Выполняется парсинг данных из файла consts.json
 		std::ifstream file;
 		file.open(R"(consts.json)", std::ios::in);
+		if (!file.is_open()) throw Exceptions("Попытка открыть несуществующий файл.");
 		json Doc{ json::parse(file) };
-		for (auto& [key, value] : Doc.items()) { 
+		for (auto& [key, value] : Doc.items()) {
 			if (key == "fuel_el_step") fuel_el_step = value;
 			else if (key == "delta_shell") delta_shell = value;
 			else if (key == "delta_He") delta_He = value;
@@ -69,7 +70,10 @@ public:
 			else if (key == "reactor_thermal_power") reactor_thermal_power = value;
 			else if (key == "enthalpy_in") enthalpy_in = value;
 			else if (key == "enthalpy_out") enthalpy_out = value;
+			else if (key == "density_avg") density_avg = value;
+			else throw Exceptions("Некорректные входные данные.");
 		}
+		// Выполняется расчет тепловой мощности и расхода для одного ТВЭЛа 
 		N_t = reactor_thermal_power * 1000000 / 312 / 163;
 		consumption = N_t / (enthalpy_out - enthalpy_in);
 	}
