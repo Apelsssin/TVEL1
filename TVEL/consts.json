@@ -15,7 +15,7 @@
 	"K_r_max": 1,
 	"K_z": 1,
 	"rho_coolant_avg": 691.1,
-	"mu_coolant_avg": 88300000,
+	"mu_coolant_avg": 0.0000438,
 	"enthalpy_in": 1324380,
 	"enthalpy_out": 1482950,
 	"reactor_thermal_power": 3200,

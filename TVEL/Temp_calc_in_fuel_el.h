@@ -28,7 +28,6 @@ class TVEL {
 	float shell_lambda;	// Коэф. теплопроводности оболочки ТВЭЛа	[Вт/м*К]
 	float K_r_max;	// Макс. коэф. неравномерности по радиусу	[-]
 	float K_z;	// Коэф. неравномерности по высоте	[-]
-	const double l = 0.0000001;	// Длина свободного пробега молекул теплоносителя	[м]
 	const size_t n_assembly = 1;	// Число ТВС	[-]
 	const size_t n_fuel_el = 1;	// Число ТВЭЛ	[-]
 	std::vector <std::pair <float, float>> v_of_temp_K;	// Вектор расперделения температур по радиусу в Кельвинах
@@ -49,6 +48,7 @@ public:
 		if (!file.is_open()) throw Exceptions("Попытка открыть несуществующий файл.");
 		json Doc{ json::parse(file) };
 		for (auto& [key, value] : Doc.items()) {
+			if (value <= 0) throw Exceptions("Значение входных данных < или = 0.");
 			if (key == "fuel_el_step") fuel_el_step = value;
 			else if (key == "delta_shell") delta_shell = value;
 			else if (key == "delta_He") delta_He = value;
