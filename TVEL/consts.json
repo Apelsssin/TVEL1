@@ -6,7 +6,6 @@
 	"fuel_el_step": 0.01275,
 	"coolant_temp_in_K": 571.35,
 	"coolant_temp_out_K": 602.05,
-	"q_v": 1000000000,
 	"Cp": 5810,
 	"coolant_lambda": 0.539,
 	"fuel_lambda": 3.22,
@@ -14,10 +13,10 @@
 	"shell_lambda": 19.3,
 	"K_r_max": 1,
 	"K_z": 1,
-	"rho_coolant_avg": 691.1,
-	"mu_coolant_avg": 0.0000438,
+	"rho_coolant_avg": 700.49,
+	"mu_coolant_avg": 0.0000538,
 	"enthalpy_in": 1324380,
 	"enthalpy_out": 1482950,
 	"reactor_thermal_power": 3200,
-	"density_avg": 700.49
+	"height" : 3.730
 }

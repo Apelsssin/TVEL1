@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <utility>
 #include <algorithm>
@@ -38,7 +39,7 @@ class TVEL {
 	long double consumption;	// Расход через сечение 1 ТВЭЛ	[кг/с]   
 	float enthalpy_in;	// Энтальпия на входе	[Дж/кг]
 	float enthalpy_out;	// Энтальпия на выходе	[Дж/кг]
-	float density_avg;	// Средняя плотность теплоносителя	[кг/м^3]
+	float height;	// Высота обогреваемой части	[м]
 
 public:
 	TVEL() {
@@ -56,7 +57,6 @@ public:
 			else if (key == "inner_radius_fuel_tablet") inner_radius_fuel_tablet = value;
 			else if (key == "coolant_temp_in_K") coolant_temp_in_K = value;
 			else if (key == "coolant_temp_out_K") coolant_temp_out_K = value;
-			else if (key == "q_v") q_v = value;
 			else if (key == "r_step") r_step = value;
 			else if (key == "Cp") Cp = value;
 			else if (key == "coolant_lambda") coolant_lambda = value;
@@ -70,7 +70,7 @@ public:
 			else if (key == "reactor_thermal_power") reactor_thermal_power = value;
 			else if (key == "enthalpy_in") enthalpy_in = value;
 			else if (key == "enthalpy_out") enthalpy_out = value;
-			else if (key == "density_avg") density_avg = value;
+			else if (key == "height") height = value;
 			else throw Exceptions("Некорректные входные данные.");
 		}
 		// Выполняется расчет тепловой мощности и расхода для одного ТВЭЛа 
@@ -83,7 +83,7 @@ public:
 	std::vector <std::pair <float, float>> get_v();
 	// Сортировка неупорядоченных значений вектора v_of_temp_K
 	void sort();
-
+	// Запрет на создание копий обьекта класса
 	TVEL(const TVEL&) = delete;
 	void operator= (const TVEL&) = delete;
 };

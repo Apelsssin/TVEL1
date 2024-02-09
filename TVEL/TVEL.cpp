@@ -15,9 +15,10 @@ using json = nlohmann::json;
 
 /*
 Допущения:
-1. Длина много больше диаметра. Теплопередачей по высоте пренебрегаем. 
-2. Топливная таблетка однородна
-3. Коэф. теплопроводности постоянны
+1. Длина много больше диаметра. Теплопередачей по высоте пренебрегаем.;
+2. Топливная таблетка однородна;
+3. Коэф. теплопроводности постоянны;
+4. Отношение значений чисел Прандтля пристеночной области к области, находящейся за пограничными слоями, примерно равны 1.
 */
 
 int main(int argc, char* argv[])
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
 		Gnuplot gp;
 		gp << "set ylabel 'Температура, ^ K' font 'Times - Roman, 16'\n ";
 		gp << "set xlabel 'Радиус, ^ м' font 'Times - Roman, 16'\n ";
-		gp << "set xrange [0:0.007]\nset yrange [0:2500]\n";
+		gp << "set xrange [0:0.007]\nset yrange [0:1800]\n";
 		gp << "set terminal pngcairo\n";
 		gp << "set output 'Температурное распределение по радиусу ТВЭЛа.png'\n";
 		gp << "plot '-' lt 11 lw 2 with linespoints title "
@@ -42,6 +43,7 @@ int main(int argc, char* argv[])
 
 		return 0;
 	}
+	// Выброс окна об ошибке
 	catch (const Exceptions& e) {
 		SetConsoleCP(1251);
 		std::string str = e.what();
