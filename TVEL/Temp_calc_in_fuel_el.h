@@ -36,7 +36,7 @@ class TVEL {
 	float mu_coolant_avg;	// Динамическая вязкость теплоносителя	[Па*с]
 	float reactor_thermal_power;	// Тепловая мощность реактора	[МВт]
 	float N_t;	// Тепловая мощность одного ТВЭЛа	[Вт] 
-	long double consumption;	// Расход через сечение 1 ТВЭЛ	[кг/с]   
+	float consumption;	// Расход через сечение 1 ТВЭЛ	[кг/с]   
 	float enthalpy_in;	// Энтальпия на входе	[Дж/кг]
 	float enthalpy_out;	// Энтальпия на выходе	[Дж/кг]
 	float height;	// Высота обогреваемой части	[м]

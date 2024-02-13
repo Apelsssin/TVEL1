@@ -13,22 +13,22 @@
 using json = nlohmann::json;
 // Расчитывет значение температуры от радиуса и отправляет данные в v_of_temp_K
 void TVEL::temperature_calculation() {
-	double area = sqrt(3) / 2 * fuel_el_step * fuel_el_step - M_PI * (outer_radius_fuel_tablet + delta_He + delta_shell)
+	float area = sqrt(3) / 2 * fuel_el_step * fuel_el_step - M_PI * (outer_radius_fuel_tablet + delta_He + delta_shell)
 		* (outer_radius_fuel_tablet + delta_He + delta_shell);	// Площадь теплоносителя 1 ТВЭЛ	[м^2]
-	double perimeter = 2 * M_PI * (outer_radius_fuel_tablet + delta_He + delta_shell);	// Смачиваемый периметр 1 ТВЭЛ	[м]
-	double coolant_velocity = consumption / area / rho_coolant_avg;	// Скорость теплоносителя	[м/с]
-	double d_g_assembly = 4 * area / perimeter;	// Гидравлический диаметр	[м]
+	float perimeter = 2 * M_PI * (outer_radius_fuel_tablet + delta_He + delta_shell);	// Смачиваемый периметр 1 ТВЭЛ	[м]
+	float coolant_velocity = consumption / area / rho_coolant_avg;	// Скорость теплоносителя	[м/с]
+	float d_g_assembly = 4 * area / perimeter;	// Гидравлический диаметр	[м]
 	float coolant_temp_avg_K = (coolant_temp_in_K + coolant_temp_out_K) / 2;	// Средняя температура теплоносителя	[К]
 	float nu_coolant_avg = mu_coolant_avg / rho_coolant_avg;	// Кинематическая вязкость	[м^2/c]
 
-	long double Pe = rho_coolant_avg * Cp * coolant_velocity * d_g_assembly / coolant_lambda;	// Число Пекле	[-]
-	double delta_t = sqrt(1 / Pe) * d_g_assembly;	// Толщина теплового пограничного слоя теплоносителя	[м]
-	double Re = coolant_velocity * d_g_assembly / nu_coolant_avg;	// Критерий Рейнольдса	[-]
-	double Pr = mu_coolant_avg * Cp / coolant_lambda;	// Критерий Прандтля	[-]
-	double Nu;	// Число Нуссельта	[-]
+	long float Pe = rho_coolant_avg * Cp * coolant_velocity * d_g_assembly / coolant_lambda;	// Число Пекле	[-]
+	float delta_t = sqrt(1 / Pe) * d_g_assembly;	// Толщина теплового пограничного слоя теплоносителя	[м]
+	float Re = coolant_velocity * d_g_assembly / nu_coolant_avg;	// Критерий Рейнольдса	[-]
+	float Pr = mu_coolant_avg * Cp / coolant_lambda;	// Критерий Прандтля	[-]
+	float Nu;	// Число Нуссельта	[-]
 	if (Re < 100000) Nu = 0.69 * pow(Re, 0.5) * pow(Pr, 0.33);
 	else Nu = 0.037 * pow(Re, 0.8) * pow(Pr, 0.43);
-	double coolant_alpha = Nu * coolant_lambda / d_g_assembly;	// Коэф. теплоотдачи теплоносителя	[Вт/м^2*К]
+	float coolant_alpha = Nu * coolant_lambda / d_g_assembly;	// Коэф. теплоотдачи теплоносителя	[Вт/м^2*К]
 	q_v = N_t / (M_PI * pow(outer_radius_fuel_tablet + delta_He + delta_shell , 2) * height);
 
 	//Вычисляются разности температур. Они зависят только от z.
