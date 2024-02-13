@@ -33,16 +33,21 @@ int main(int argc, char* argv[])
 		// Построение графика
 		Gnuplot gp;
 		gp << "set ylabel 'Температура, ^ K' font 'Times - Roman, 16'\n ";
-		gp << "set xlabel 'Радиус, ^ м' font 'Times - Roman, 16'\n ";
-		gp << "set xrange [0:0.007]\nset yrange [0:1800]\n";
+		gp << "set xlabel 'Радиус, ^ мм' font 'Times - Roman, 16'\n ";
+		gp << "set xrange [0:7]\nset yrange [0:1800]\n";
 		gp << "set terminal pngcairo\n";
+		gp << "set grid\n";
 		gp << "set output 'Температурное распределение по радиусу ТВЭЛа.png'\n";
 		gp << "plot '-' lt 11 lw 2 with linespoints title "
-			"'Temperature'\n";
+			"'Temperature calculation in program', 'Validation_data.txt' with points pt 7 lt 1\n";
 		gp.send1d(t.get_v());
 
+
 		return 0;
-	}
+	}  //gnuplot> plot "stats.txt" u 1:2 title "Heart disease" w l, "" u 1:3 title "Cancer" w l, "" 
+	//u 1:4 title "Cerebro-vascular diseases" w l, "" u 1:5 title "Lower respiratory diseases" w l, "" u 1:6 title 
+		//"Diabetes mellitus" w l, "" u 1:7 title "Influenza and pneumonia" w l, "" u 1:8 title "Chronic liver disease" w l, "" 
+		//u 1:9 title "Accidents" w l, "" u 1:10 title "Suicide" w l, "" u 1:11 title "Homicide" w l
 	// Выброс окна об ошибке
 	catch (const Exceptions& e) {
 		SetConsoleCP(1251);

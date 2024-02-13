@@ -29,13 +29,13 @@ class TVEL {
 	float shell_lambda;	// Коэф. теплопроводности оболочки ТВЭЛа	[Вт/м*К]
 	float K_r_max;	// Макс. коэф. неравномерности по радиусу	[-]
 	float K_z;	// Коэф. неравномерности по высоте	[-]
-	const size_t n_assembly = 1;	// Число ТВС	[-]
-	const size_t n_fuel_el = 1;	// Число ТВЭЛ	[-]
+	const size_t n_assembly = 163;	// Число ТВС	[-]
+	const size_t n_fuel_el = 312;	// Число ТВЭЛ	[-]
 	std::vector <std::pair <float, float>> v_of_temp_K;	// Вектор расперделения температур по радиусу в Кельвинах
 	float rho_coolant_avg;	// Средняя плотность теплоносителя	[кг/м^3]
 	float mu_coolant_avg;	// Динамическая вязкость теплоносителя	[Па*с]
 	float reactor_thermal_power;	// Тепловая мощность реактора	[МВт]
-	long double N_t;	// Тепловая мощность одного ТВЭЛа	[Вт] 
+	float N_t;	// Тепловая мощность одного ТВЭЛа	[Вт] 
 	long double consumption;	// Расход через сечение 1 ТВЭЛ	[кг/с]   
 	float enthalpy_in;	// Энтальпия на входе	[Дж/кг]
 	float enthalpy_out;	// Энтальпия на выходе	[Дж/кг]
@@ -74,7 +74,7 @@ public:
 			else throw Exceptions("Некорректные входные данные.");
 		}
 		// Выполняется расчет тепловой мощности и расхода для одного ТВЭЛа 
-		N_t = reactor_thermal_power * 1000000 / 312 / 163;
+		N_t = reactor_thermal_power * 1000000 / n_assembly / n_fuel_el;
 		consumption = N_t / (enthalpy_out - enthalpy_in);
 	}
 	// Расчитывет значение температуры от радиуса и отправляет данные в v_of_temp_K

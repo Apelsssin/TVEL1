@@ -36,13 +36,13 @@ void TVEL::temperature_calculation() {
 	float temp_between_max_and_outer_radius_fuel_tablet = q_v * outer_radius_fuel_tablet * outer_radius_fuel_tablet
 		/ 4 / fuel_lambda * K_r_max * K_z;
 	//Температурная разность между температурой на внешнем радиусе топливной таблетки и температурой на внутренней стороне оболочки ТВЭЛа	[К]
-	float temp_between_outer_radius_fuel_tablet_and_inner_shell = delta_He * N_t / He_lambda * n_assembly / ((outer_radius_fuel_tablet) * 2)
-		/ M_PI / n_fuel_el * K_z * K_r_max;
+	float temp_between_outer_radius_fuel_tablet_and_inner_shell = delta_He * N_t / He_lambda / ((outer_radius_fuel_tablet) * 2)
+		/ M_PI * K_z * K_r_max;
 	//Температурная разность между температурой на внутренней стороне и температурой на внешней стороне оболочки ТВЭЛа	[К]
-	float temp_between_inner_and_outer_shell = delta_shell * N_t * n_assembly / shell_lambda
-		/ ((outer_radius_fuel_tablet + delta_He) * 2) / M_PI / n_fuel_el * K_z * K_r_max;
+	float temp_between_inner_and_outer_shell = delta_shell * N_t / shell_lambda
+		/ ((outer_radius_fuel_tablet + delta_He) * 2) / M_PI  * K_z * K_r_max;
 	//Температурная разность между температурой на внешней стороне оболочки ТВЭЛа и температурой теплоносителя	[К]
-	float temp_between_outer_shell_and_coolant = N_t * n_assembly * K_z * K_r_max / coolant_alpha / M_PI
+	float temp_between_outer_shell_and_coolant = N_t  * K_z * K_r_max / coolant_alpha / M_PI
 		/ 2 / (outer_radius_fuel_tablet + delta_He + delta_shell);
 	//Вычисляются значения температур
 	float temp_outer_shell_K = coolant_temp_avg_K + temp_between_outer_shell_and_coolant;	// Температура на внешней стороне оболочки ТВЭЛа	[К]
@@ -52,7 +52,7 @@ void TVEL::temperature_calculation() {
 
 	// Лямбда-функция для добавления в вектор v_of_temp_K
 	auto push = [&](float r, float temp) {
-		std::pair <float, float> var(r, temp);
+		std::pair <float, float> var(r * 1000, temp);
 		v_of_temp_K.push_back(var);
 		};
 	// Добавляются вычисленные граничные значения температур в вектор

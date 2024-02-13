@@ -147,6 +147,12 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Temp_calc_in_fuel_el.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="consts.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Validation_data.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

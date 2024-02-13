@@ -33,4 +33,10 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="consts.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Validation_data.txt" />
+  </ItemGroup>
 </Project>
